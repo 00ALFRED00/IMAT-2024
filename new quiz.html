@@ -164,25 +164,57 @@
         font-size: 16px;
       }
 
-      label {
-        font-size: 14px;
+        label {
+          font-size: 14px;
+        }
       }
-    }
+
+  .details {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #555;
+}
+
+.details ul {
+  list-style: none;
+  padding: 0;
+}
+
+.details li {
+  margin-bottom: 10px;
+}
+
+.details .incorrect {
+  color: #d9534f;
+  font-weight: bold;
+  background-color: #f8d7da;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.details .correct {
+  color: #5cb85c;
+  font-weight: bold;
+  background-color: #d4edda;
+  padding: 5px;
+  border-radius: 5px;
+}
 </style>
 </head>
 <body>
+  <div class="quiz-container">
+  <h1>IMAT 2024 - Quiz</h1>
+  <p>Answer the following questions. Each correct answer is worth 1.5 points, and each incorrect answer deducts 0.4 points. No answer will not affect your score.</p>
+  <form id="quizForm"></form>
+  <button type="button" onclick="submitQuiz()">Submit</button>
+  <div class="result" id="result"></div>
+  <div class="details" id="details"></div>
+</div>
 
-    <div class="quiz-container">
-      <h1>IMAT 2024 - Quiz</h1>
-        <p>Answer the following questions. Each correct answer is worth 1.5 points, and each incorrect answer deducts 0.4 points. No answer will not affect your score.</p>
-      <form id="quizForm"></form>
-      <button type="button" onclick="calculateScore()">Submit</button>
-      <div class="result" id="result"></div>
-    </div>
     
 <script>
   const questions = [
-    { text: "1. Who is the author of the famous novel 'To the Lighthouse'?", options: ["Virginia Woolf", "Mary Shelley", "Jane Austen", "Emily Dickinson", "Agatha Christie"], answer: "Virginia Woolf" },
+    { text: "1. Who is the author of the famous novel 'To the Lighthouse'?", options: ["Virginia Wolf", "Mary Shelley", "Jane Austen", "Emily Dickinson", "Agatha Christie"], answer: "Virginia Wolf" },
     { 
       text: `2. Based on historical records, we can say that many ancient societies devised symbols to represent 
 numbers and solutions to mathematical problems. Although thinkers began to take the first steps 
@@ -322,7 +354,7 @@ Which of the following CANNOT be inferred from the text?`,
 
 { text: "47. According to the Brønsted−Lowry theory:", options: ["a strong acid forms a conjugate with a weak base", "the conjugate base is formed by an acid that has acquired an OH− ion", "the conjugate acid is the product of the bonding of the base with an OH− ion", "a base is a compound which can donate OH− ions", "an acid is a substance which can provide a pair of electrons"], answer: "a strong acid forms a conjugate with a weak base" },
 
-{ text: "48. The expression 2^13 / 2^5 is equivalent to:", options: ["2^2", "2", "3^4", "6^2", "6^22"], answer: "2^8" },
+{ text: "48. The expression 2^13 / 2^5 is equivalent to:", options: ["2^8", "2", "3^4", "6^2", "6^22"], answer: "2^8" },
 
 { text: "49. If f(x) = log2(2x + 2), what is the reciprocal of f(2)?", options: ["1/4", "4", "2", "1/2", "6"], answer: "1/4" },
 
@@ -348,6 +380,43 @@ Which of the following CANNOT be inferred from the text?`,
 
 { text: "60. A pendulum rod moves from the vertical position. Which of the following statements is false?", options: ["In the absence of friction, the pendulum tends to come to a stop after a certain time", "In the absence of friction, the motion is simple harmonic oscillation.", "In the presence of friction oscillatory motion is damped.", "The pendulum stops after reaching a certain height and then swings back.", "The pendulum describes a circular arc during its motion."], answer: "In the absence of friction, the pendulum tends to come to a stop after a certain time" }
   ];
+  let startTime = Date.now(); // Start the timer when the page loads
+
+function submitQuiz() {
+  const endTime = Date.now(); // End the timer
+  const timeTaken = Math.floor((endTime - startTime) / 1000); // Calculate time in seconds
+
+  let score = 0;
+  let total = 0;
+  const details = document.getElementById("details");
+  details.innerHTML = "<h3>Question Review:</h3><ul>";
+
+  questions.forEach((q, idx) => {
+    const qId = `q${idx + 1}`;
+    const selected = document.querySelector(`input[name="${qId}"]:checked`);
+    const listItem = document.createElement("li");
+
+    if (selected) {
+      total++;
+      if (selected.value === q.answer) {
+        score += 1.5;
+        listItem.innerHTML = `<strong>Q${idx + 1}:</strong> Correct`;
+        listItem.className = "correct";
+      } else {
+        score -= 0.4;
+        listItem.innerHTML = `<strong>Q${idx + 1}:</strong> Incorrect. Correct answer: <em>${q.answer}</em>`;
+        listItem.className = "incorrect";
+      }
+    } else {
+      listItem.innerHTML = `<strong>Q${idx + 1}:</strong> Not answered. Correct answer: <em>${q.answer}</em>`;
+      listItem.className = "incorrect";
+    }
+
+    details.querySelector("ul").appendChild(listItem);
+  });
+
+  document.getElementById("result").innerText = `You answered ${total} out of ${questions.length} questions.\nFinal Score: ${score.toFixed(2)} / ${(questions.length * 1.5).toFixed(1)}\nTime Taken: ${timeTaken} seconds`;
+}
 
   function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -392,3 +461,80 @@ Which of the following CANNOT be inferred from the text?`,
 
 </body>
 </html>
+<style>
+  .incorrect-answer {
+    color: #d9534f;
+    font-weight: bold;
+  }
+
+  .correct-answer {
+    color: #5cb85c;
+    font-weight: bold;
+  }
+</style>
+
+<script>
+  function submitQuiz() {
+    const endTime = Date.now(); // End the timer
+    const timeTaken = Math.floor((endTime - startTime) / 1000); // Calculate time in seconds
+
+    let score = 0;
+    let total = 0;
+    const details = document.getElementById("details");
+    details.innerHTML = "<h3>Question Review:</h3><ul>";
+
+    questions.forEach((q, idx) => {
+      const qId = `q${idx + 1}`;
+      const selected = document.querySelector(`input[name="${qId}"]:checked`);
+      const listItem = document.createElement("li");
+
+      if (selected) {
+        total++;
+        if (selected.value === q.answer) {
+          score += 1.5;
+          listItem.innerHTML = `<strong>Q${idx + 1}:</strong> Correct`;
+          listItem.className = "correct";
+        } else {
+          score -= 0.4;
+          listItem.innerHTML = `<strong>Q${idx + 1}:</strong> Incorrect. Correct answer: <em>${q.answer}</em>`;
+          listItem.className = "incorrect";
+
+          // Highlight incorrect and correct answers
+          selected.parentElement.classList.add("incorrect-answer");
+        }
+      } else {
+        listItem.innerHTML = `<strong>Q${idx + 1}:</strong> Not answered. Correct answer: <em>${q.answer}</em>`;
+        listItem.className = "unanswered";
+      }
+
+      // Highlight correct answer for all questions
+      const correctOption = document.querySelector(`input[name="${qId}"][value="${q.answer}"]`);
+      if (correctOption) {
+        correctOption.parentElement.classList.add("correct-answer");
+      }
+
+      details.querySelector("ul").appendChild(listItem);
+    });
+
+    document.getElementById("result").innerText = `You answered ${total} out of ${questions.length} questions.\nFinal Score: ${score.toFixed(2)} / ${(questions.length * 1.5).toFixed(1)}\nTime Taken: ${timeTaken} seconds`;
+  }
+</script>
+
+<style>
+  .incorrect-answer {
+    color: #d9534f;
+    font-weight: bold;
+  }
+
+  .correct-answer {
+    color: #5cb85c;
+    font-weight: bold;
+  }
+
+  .unanswered {
+    color: #fff;
+    background-color: #f0ad4e;
+    padding: 5px;
+    border-radius: 5px;
+  }
+</style>
