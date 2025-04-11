@@ -1,4 +1,76 @@
 <!DOCTYPE html>
+<div id="startScreen">
+  <h1>Welcome to the IMAT 2024 Quiz</h1>
+  <p style="max-width: 600px; margin: 0 auto; font-size: 16px; line-height: 1.5;">
+    Test your knowledge and prepare for the IMAT 2024 exam. Each correct answer is worth 1.5 points, and each incorrect answer deducts 0.4 points. No answer will not affect your score. Click the button below to start the quiz.
+    <br><br>
+  </p>
+  <button onclick="startQuiz()">Start Quiz</button>
+</div>
+
+<style>
+  .quiz-container {
+    display: none;
+  }
+
+  #startScreen {
+    background-color: black;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  #startScreen button {
+    padding: 5px 15px; /* Adjusted padding to make the button less wide */
+    font-size: 14px;
+    border-radius: 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  #startScreen button {
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  #startScreen button {
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  #startScreen button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+
+  #startScreen h1 {
+    color: white;
+  }
+</style>
+
+<script>
+  function startQuiz() {
+    document.getElementById("startScreen").style.display = "none";
+    document.querySelector(".quiz-container").style.display = "block";
+    startTime = Date.now(); // Start the timer when the quiz begins
+  }
+</script>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
